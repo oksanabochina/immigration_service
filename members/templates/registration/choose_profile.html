@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Choose Profile
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+    <br/>
+    <h3>Create a Profile</h3>
+    <br/>
+    Let us know you a little bit better.<br/><br/>
+    Who are you?
+    <br/><br/>
+    <a href="{% url 'create_user_profile' %}" class="btn btn-primary">I'm a User</a>
+    <a href="{% url 'create_consultant_profile' %}" class="btn btn-outline-primary">I'm a Consultant</a>
+    {% endif %}
+{% endblock %}

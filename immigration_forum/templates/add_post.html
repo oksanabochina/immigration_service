@@ -1,0 +1,39 @@
+{% extends 'base.html' %}}
+
+{% block title %}
+    Add New Post
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.consultantprofile.id %}
+            <br/><br/>
+            <h3>Add New Post</h3>
+            <br/>
+            <div class="mb-3">
+            <form method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.media }}
+                {{ form.as_p }}
+                <button class="btn btn-info">Post</button>
+            </div>
+        {% elif user.userprofile.id %}
+            <br/><br/>
+            <strong>You need to be a consultant to make a new post. Please enjoy our blog!</strong>
+        {% else %}
+            <br/><br/>
+            <strong>You need to create a Consultant profile to make a new post</strong>
+            <br/><br/>
+            <a href="{% url 'create_profile_page' %}">Create Profile</a>
+            <br/><br/>
+        {% endif %}
+    {% else %}
+        <strong>You need to Log In to add a new post!</strong>
+        <br/><br/>
+        <a href="{% url 'login' %}">Log in</a>
+        <br/><br/>
+        <a href="{% url 'register' %}">Register</a>
+        <br/><br/>
+        <a href="{% url 'home' %}" class="btn btn-info">Back</a>
+    {% endif %}
+{% endblock %}

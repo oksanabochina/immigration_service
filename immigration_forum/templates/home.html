@@ -1,0 +1,42 @@
+{% extends 'base.html' %}}
+{% load static %}}
+{% block content %}
+<br/><br/>
+<!--<ul>-->
+<!--    {% for country in country_list %}-->
+<!--    <li>-->
+<!--        <h5><a href="{% url 'country_details' country.pk %}" class="link-dark">-->
+<!--           {{ country }}-->
+<!--       </a></h5>-->
+<!--        <img src="{% static 'immigration_forum/images/1.png' %}" width="30" height="18">-->
+<!--    <br/>-->
+<!--    </li>-->
+<!--    {% endfor %}-->
+<!--</ul>-->
+
+
+<table class="table table-light table-bordered table align-middle">
+  <tbody>
+  {% for country in country_list %}
+    <tr>
+      <th style="width: 15.00%">
+          <div class="shadow p-4 mb-1 bg-body rounded" style="text-align:center">
+          <h5><a href="{% url 'country_details' country.pk %}" class="link-dark">
+          <img src="{{ country.flag.url }}" width="110" height="60"><br/>
+           {{ country }}
+            </a></h5>
+          </div>
+      </th>
+        <td>
+            {{ country.snippet }}
+        </td>
+
+    </tr>
+  </tbody>
+    {% endfor %}
+</table>
+
+
+
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Post
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.consultantprofile.id  %}
+            {% if user.consultantprofile.id == post.author.id %}
+                <br/>
+                    <h3>Edit Post</h3>
+                <br/>
+                <div class="mb-3">
+                <form method='POST'>
+                    {% csrf_token %}
+                    {{ form.media }}
+                    {{ form.as_p }}
+                    <button class="btn btn-info">Update</button>
+                </div>
+            {% else %}
+                <br/>
+                <strong>You are not allowed to edit this post!</strong>
+                <br/>
+                <br/>
+                <a href="{% url 'blog' %}" class="btn btn-info">Back</a>
+            {% endif %}
+        {% else %}
+                <br/>
+                <strong>Only consultants can edit posts</strong>
+                <br/>
+                <br/>
+                <a href="{% url 'blog' %}" class="btn btn-info">Back</a>
+        {% endif %}
+    {% else %}
+        <strong>You need to Log In to edit this post!</strong>
+        <br/><br/>
+        <a href="{% url 'login' %}">Log in</a>
+        <br/><br/>
+        <a href="{% url 'register' %}">Register</a>
+        <br/><br/>
+        <a href="{% url 'home' %}" class="btn btn-info">Back</a>
+    {% endif %}
+
+{% endblock %}

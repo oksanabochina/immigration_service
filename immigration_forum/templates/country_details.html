@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ country }}
+{% endblock %}
+
+{% block content %}
+    <br/><br/>
+    <img src="{{ country.flag.url }}" width="200" height="120"><br/><br/>
+    <h2> {{ country }}</h2>
+
+    <br/><br/>
+    {{ country.info }}
+    <br/><br/><br/><br/>
+    {% if post_list %}
+    <h3>Blog about {{ country }}</h3>
+    <br/>
+    <table class="table table-light table-bordered table align-middle">
+        <tbody>
+            {% for post in post_list %}
+            <tr>
+              <th style="width: 15.00%">
+                  <div class="shadow p-4 mb-1 bg-body rounded" style="text-align:center">
+                  <h5><a href="{% url 'show_consultant_profile' post.author.id %}" class="link-dark">
+                        <img src="{{ post.author.profile_pic.url }}" width="110" height="120"><br/>
+                        {{ post.author }}
+                    </a></h5>
+                  </div>
+              </th>
+                <td>
+                     <a href="{% url 'country_details' post.country.id %}">
+                        <img src="{{ post.country.flag.url }}" width="35" height="20">
+                     <a/>
+                    <br/><br/>
+                    <h4>{{ post.title }}</h4> <a href="{% url 'show_post' post.pk %}">Read post...</a>
+                    {% if user.is_authenticated %}
+                        {% if user.consultantprofile.id %}
+                            {% if user.consultantprofile.id == post.author.id %}
+                                <small>
+                                    <a href="{% url 'edit_post' post.id %}" class="link-secondary">(Edit)</a>
+                                    <a href="{% url 'delete_post' post.pk %}" class="link-danger">(Delete)</a>
+                                </small>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+            {% endfor %}
+    </table>
+    {% endif %}
+{% endblock %}

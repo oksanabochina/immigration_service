@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    Edit Profile
+{% endblock %}
+
+{% block content %}
+    {% if user.is_authenticated %}
+        {% if user.consultantprofile.id %}
+            {% if user.consultantprofile.id == consultantprofile.id %}
+                <br/>
+                <h3>Edit Profile Page</h3>
+                <br/>
+                <div class="mb-3">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <button class="btn btn-info">Update Profile</button>
+                </div>
+            {% else %}
+                <br/><br/>
+                <strong>You can't edit someone else's profile!</strong>
+            {% endif %}
+        {% elif user.userprofile.id %}
+            <br/><br/>
+            <strong>You can edit your profile
+                <a href="{% url 'update_user_profile' user.userprofile.id%}">here</a>
+            </strong>
+            <br/><br/>
+        {% else %}
+            <br/><br/>
+            <strong>You need to Create a profile first!</strong>
+            <br/><br/>
+            <a href="{% url 'create_user_profile' %}">Create a Profile</a>
+        {% endif %}
+    {% else %}
+        <br/><br/>
+        <strong>You need to Log In to edit a profile!</strong>
+        <br/><br/>
+        <a href="{% url 'login' %}">Log in</a>
+        <br/><br/>
+        <a href="{% url 'register' %}">Register</a>
+        <br/><br/>
+        <a href="{% url 'home' %}" class="btn btn-info">Back</a>
+    {% endif %}
+
+{% endblock %}

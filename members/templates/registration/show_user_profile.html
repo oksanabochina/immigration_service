@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ userprofile.user.first_name }} {{ userprofile.user.last_name }}
+{% endblock %}
+
+{% block content %}
+    <br/><br/>
+    <h3>User Profile</h3>
+    <h5>{{ userprofile.user.username }}</h5>
+    <br/>
+    <br/>
+    <div class="card mb-3" style="max-width: 700px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+            {% if userprofile.profile_pic %}
+                <img src="{{ userprofile.profile_pic.url }}" class="img-fluid rounded-start">
+            {% else %}
+                <img src="{% static 'immigration_forum/images/default.png'%}" class="img-fluid rounded-start" >
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h5 class="card-title">{{ userprofile.user.first_name }} {{ userprofile.user.last_name }}</h5>
+             <p class="card-text"><small class="text-muted">
+                 {% if userprofile.website_url %}
+                    <a href="{{ userprofile.website_url}}" class="link-secondary">Website | </a>
+                 {% endif %}
+                 {% if userprofile.instagram_url %}
+                    <a href="{{ userprofile.instagram_url}}" class="link-secondary">Instagram | </a>
+                 {% endif %}
+                 {% if userprofile.facebook_url %}
+                    <a href="{{ userprofile.facebook_url}}" class="link-secondary">Facebook | </a>
+                 {% endif %}
+                 {% if userprofile.twitter_url %}
+                    <a href="{{ userprofile.twitter_url}}" class="link-secondary">Twitter | </a>
+                 {% endif %}
+                 {% if userprofile.linkedin_url %}
+                    <a href="{{ userprofile.linkedin_url}}" class="link-secondary">Linkedin |</a>
+                 {% endif %}
+             </small></p>
+            <p class="card-text">{{ userprofile.bio }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
+{% endblock %}

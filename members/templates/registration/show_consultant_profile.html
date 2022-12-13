@@ -1,0 +1,96 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}
+    {{ consultantprofile.user.first_name }} {{ consultantprofile.user.last_name }}
+{% endblock %}
+
+{% block content %}
+    <br/><br/>
+    <h3>Consultant Profile</h3>
+    <h5>{{ consultantprofile.user.username }}</h5>
+    <br/>
+    <br/>
+    <div class="card mb-3" style="max-width: 700px;">
+      <div class="row g-0">
+        <div class="col-md-4">
+            {% if consultantprofile.profile_pic %}
+                <img src="{{ consultantprofile.profile_pic.url }}" class="img-fluid rounded-start">
+            {% else %}
+                <img src="{% static 'immigration_forum/images/default.png'%}" class="img-fluid rounded-start" >
+            {% endif %}
+        </div>
+        <div class="col-md-8">
+          <div class="card-body">
+            <h4 class="card-title">
+                {{ consultantprofile.user.first_name }} {{ consultantprofile.user.last_name }}
+                  <br/>
+            </h4>
+             <p class="card-text">
+                 {{ consultantprofile.country }}
+                 <a href="{% url 'country_details' consultantprofile.country.id %}">
+                    <img src="{{ consultantprofile.country.flag.url }}" width="35" height="20">
+                 <a/>
+                 <br/>
+                 <small class="text-muted">
+                 {% if consultantprofile.website_url %}
+                    <a href="{{ consultantprofile.website_url}}" class="link-secondary">Website | </a>
+                 {% endif %}
+                 {% if consultantprofile.instagram_url %}
+                    <a href="{{ consultantprofile.instagram_url}}" class="link-secondary">Instagram | </a>
+                 {% endif %}
+                 {% if consultantprofile.facebook_url %}
+                    <a href="{{ consultantprofile.facebook_url}}" class="link-secondary">Facebook | </a>
+                 {% endif %}
+                 {% if consultantprofile.twitter_url %}
+                    <a href="{{ consultantprofile.twitter_url}}" class="link-secondary">Twitter | </a>
+                 {% endif %}
+                 {% if consultantprofile.linkedin_url %}
+                    <a href="{{ consultantprofile.linkedin_url}}" class="link-secondary">Linkedin |</a>
+                 {% endif %}
+             </small></p>
+            <p class="card-text">{{ consultantprofile.bio }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br/>
+        <br/><br/><br/><br/>
+    {% if post_list %}
+    <h3>Posts by {{ consultantprofile.user.username }}</h3>
+    <br/>
+    <table class="table table-light table-bordered table align-middle">
+        <tbody>
+            {% for post in post_list %}
+            <tr>
+              <th style="width: 15.00%">
+                  <div class="shadow p-4 mb-1 bg-body rounded" style="text-align:center">
+                  <h5><a href="{% url 'show_consultant_profile' post.author.id %}" class="link-dark">
+                        <img src="{{ post.author.profile_pic.url }}" width="110" height="120"><br/>
+                        {{ post.author }}
+                    </a></h5>
+                  </div>
+              </th>
+                <td>
+                    <a href="{% url 'country_details' post.country.id %}">
+                        <img src="{{ post.country.flag.url }}" width="35" height="20">
+                    <a/>
+                    <br/><br/>
+                    <h4>{{ post.title }}</h4> <a href="{% url 'show_post' post.pk %}">Read post...</a>
+                    {% if user.is_authenticated %}
+                        {% if user.consultantprofile.id %}
+                            {% if user.consultantprofile.id == post.author.id %}
+                                <small>
+                                    <a href="{% url 'edit_post' post.id %}" class="link-secondary">(Edit)</a>
+                                    <a href="{% url 'delete_post' post.pk %}" class="link-danger">(Delete)</a>
+                                </small>
+                            {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        </tbody>
+            {% endfor %}
+    </table>
+    {% endif %}
+{% endblock %}
