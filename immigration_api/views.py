@@ -1,6 +1,7 @@
 from rest_framework.viewsets import ModelViewSet
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.filters import SearchFilter
+from immigration_api.permissions import IsAuthorOrReadOnly
 from immigration_api.serializers import PostSerializer, CommentSerializer, ConsultantProfileSerializer, \
     PostWithCountrySerializer, CountrySerializer, UserProfileSerializer
 from immigration_forum.models import Post, Comment, ConsultantProfile, Country, UserProfile
@@ -12,9 +13,14 @@ class PostViewSet(ModelViewSet):
     filter_backends = [DjangoFilterBackend, SearchFilter]
     filterset_fields = ['author', 'country']
     search_fields = ['title', 'body']
+    permission_classes = [IsAuthorOrReadOnly]
 
-    def get_serializer_context(self):
-        return {'author_id': self.request.user.consultantprofile.id}
+    #работает только если залогинится как консультант. Разобраться после разрешений
+    # def get_serializer_context(self):
+    #     # тестирую, чтобы не ломалось на отсутствии консультант.id
+    #     if self.request.method in ['POST', 'PUT', 'PATCH']:
+    #         if self.request.user.consultantprofile:
+    #             return {'author_id': self.request.user.consultantprofile.id}
 
     def get_serializer_class(self):
         if self.request.method in ['POST', 'PUT', 'PATCH']:

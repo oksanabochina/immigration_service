@@ -43,11 +43,11 @@ class CreateUserProfileView(generic.CreateView):
     template_name = 'registration/create_user_profile.html'
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.user = self.request.user
         return super().form_valid(form)
 
     def get_success_url(self, **kwargs):
-        return reverse('show_user_profile', kwargs={'pk': self.request.user.userprofile.pk})
+        return reverse('show_user_profile', kwargs={'pk': self.request.user.id})
 
 
 class CreateConsultantProfileView(generic.CreateView):
@@ -57,11 +57,11 @@ class CreateConsultantProfileView(generic.CreateView):
     success_url = reverse_lazy('home')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.user = self.request.user.consultantprofile
         return super().form_valid(form)
-
-    def get_success_url(self, **kwargs):
-        return reverse('show_consultant_profile', kwargs={'pk': self.request.user.consultantprofile.pk})
+    #
+    # def get_success_url(self, **kwargs):
+    #     return reverse('show_consultant_profile', kwargs={'pk': self.request.user.id})
 
 
 class ShowUserProfileView(generic.DetailView):
