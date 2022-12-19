@@ -1,22 +1,6 @@
-from django.db import models, IntegrityError
-from django.contrib.auth.models import User as BaseUser
+from django.db import models
+from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
-
-
-class User(BaseUser):
-    @property
-    def consultantprofile(self):
-        try:
-            return self.consultantprofile
-        except IntegrityError:
-            return None
-
-    @property
-    def userprofile(self):
-        try:
-            return self.userprofile
-        except IntegrityError:
-            return None
 
 
 class Country(models.Model):
@@ -33,7 +17,7 @@ class Country(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name='userprofile')
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     bio = models.TextField(max_length=1000)
     profile_pic = models.ImageField(blank=True, null=True, upload_to='images/user_profile/')
     website_url = models.CharField(max_length=255, blank=True, null=True)
@@ -47,7 +31,7 @@ class UserProfile(models.Model):
 
 
 class ConsultantProfile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name='consultantprofile')
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
     bio = models.TextField(max_length=1000)
     profile_pic = models.ImageField(blank=True, null=True, upload_to='images/consultant_profile/')
