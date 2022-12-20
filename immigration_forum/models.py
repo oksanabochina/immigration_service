@@ -17,7 +17,7 @@ class Country(models.Model):
 
 
 class UserProfile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name='userprofile')
     bio = models.TextField(max_length=1000)
     profile_pic = models.ImageField(blank=True, null=True, upload_to='images/user_profile/')
     website_url = models.CharField(max_length=255, blank=True, null=True)
@@ -31,9 +31,9 @@ class UserProfile(models.Model):
 
 
 class ConsultantProfile(models.Model):
-    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, null=True, on_delete=models.CASCADE, related_name='consultantprofile')
     country = models.ForeignKey(Country, on_delete=models.PROTECT)
-    bio = models.TextField(max_length=1000)
+    bio = models.TextField(max_length=1200)
     profile_pic = models.ImageField(blank=True, null=True, upload_to='images/consultant_profile/')
     website_url = models.CharField(max_length=255, blank=True, null=True)
     instagram_url = models.CharField(max_length=255, blank=True, null=True)
